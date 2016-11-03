@@ -81,16 +81,81 @@ void afficheListe(liste l){
 	}
 }
 
+int estTrie(liste l){ //tri croissant
+	if( estListeVide(l) || estListeVide((*l).suiv) ){
+		return 1;
+	}
+	if(l->val > l->suiv->val){
+		return 0;
+	}
+	return estTrie(l->suiv);
+}
+
+liste insereT(liste l, int e){
+	if(!estTrie(l)){
+		printf("erreur");
+		return l;
+	}
+	
+	if(estListeVide(l) || e < l->val){
+		return insereD(l, e);
+	}
+	l->suiv = insereT(l->suiv, e);
+	return l;
+}
+
+int nbrvaleur(liste l){
+	int nb=0;
+	while(!estListeVide(l)){
+		nb++;
+		l = l->suiv;
+	}
+	return nb;
+}
+
+int nbrvaleur_rec(liste l){
+	if(estListeVide(l)) return 0;
+	return (1 + nbrvaleur_rec(l->suiv));
+}
+
+int rechvaleur(liste l, int e){
+	int B = 0;
+	while(!estListeVide(l)){
+		if(l->val == e){
+			B = 1;
+		}
+	l = l->suiv;
+	}
+	return B;
+}
+
+int rechvaleur_rec(liste l, int e){
+	if(estListeVide(l))	return 0;
+	if(l->val == e) return 1;
+	return rechvaleur_rec(l->suiv, e);
+}
+
 int main(){
 	liste l;
+	int k;
 	l = creerListe();
-	l = insereD(l,2);
 	l = insereD(l,3);
+	l = insereD(l,2);
 	l = insereD(l,1);
-	l = insereF(l, 12);
+	l = insereF(l, 4);
 	l = insereF_rec(l, 8);
+	if(estTrie(l)){
+		insereT(l, 6);
+		insereT(l, 5);
+		insereT(l, 7);
+		insereT(l, 12);
+	}
 	afficheListe(l);
-	
+	k = nbrvaleur(l);
+	printf("%d \n", k);
+	if(rechvaleur(l, 6)){
+		printf("la valeur 6 est presente\n");
+	}
 	libere(l);
 	
 	return 0;
