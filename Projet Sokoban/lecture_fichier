@@ -1,0 +1,26 @@
+#include "graphics.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "sasquatch1.txt"
+
+int main(){
+
+FILE* fic;
+	int obj;
+	
+	fic = fopen(str, "r");
+	if(fic == NULL){
+		printf("echec ouverture fichier %s\n", str);
+		exit(EXIT_FAILURE);
+	}
+	S.la_case[x][y].objet = jslkfj(fic, obj);
+	
+	fclose(fic);
+	return S;
+}
+
+
+
+
+}

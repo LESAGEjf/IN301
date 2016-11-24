@@ -1,0 +1,33 @@
+Makefile est un ensemble de règle.
+
+Règle 1:{	cible:_dependances
+		____commande 1
+		____commande 2
+}
+Règle 2:{
+}
+.
+.
+.
+
+s’il n’y a pas de dépendances la commande «make cible» va exécuter toutes les commandes de la règle.
+
+exemple :
+
+compil:
+	gcc -o toto -Wall toto.c -lm
+;
+
+
+
+-1e cas : la cible correspond à aucun nom de fichier
+	1) les dependances sont evaluees  :
+		=> si les dépendances sont des noms de cibles Makefile, alors les règles associées à ces cibles sont évaluées.
+	2) les commandes sont executees.
+
+-2e cas : la cible est un nom de fichier
+	1) si il y a une dépendance qui n’est pas dans un nom de fichier alors tout se passe comme dans le 1e cas.
+	2) si toutes les dépendances sont des noms de fichiers alors :
+		a) si les dates de modification des dépendances sont antérieures à la date de modification de la cible, alors les commandes ne sont pas exécutées.
+		b) sinon les commandes sont exécutées.
+
