@@ -1,28 +1,38 @@
 #include "graphics.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 
-
-
-
+void lit_niveau(int lvl){
+	FILE* fic;
+	int caractereactuel = 0, s;
+	
+	fic = fopen("sasquatch1.xsb", "r");
+	if(fic != NULL){
+		for(s=-1; s<lvl;s++){
+			do{
+				caractereactuel = fgetc(fic);
+				if(lvl-1 == s){
+					printf("%c", caractereactuel);
+				}
+			}
+			while( (caractereactuel != ';') && (caractereactuel != EOF) );
+		}
+		fclose(fic);
+	}
+	else{
+		printf("echec ouverture fichier\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	fclose(fic);
+}
 
 int main(){
-	init_graphics(400, 400);
-	POINT P2, P3;
-	COULEUR coul;
-	coul = bleu;
-	P2.x = 10; P2.y = 50;
-	P3.x = 50; P3.y = 100;
-	draw_fill_rectangle(P2, P3, coul);
 	
-	coul = jaune;
-	int rayon = 25;
-	
-	draw_circle(P3, rayon, coul);
-	
-	wait_clic();
-	draw_line(P2, P3, jaune);
-	
-	
+	lit_niveau(25);
 	
 wait_escape();
 exit(0);

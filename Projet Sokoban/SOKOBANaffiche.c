@@ -1,4 +1,3 @@
-#include "SOKOBANcase.c"
 
 void dessine_mur(SOKOBAN S, int x, int y){
 	draw_fill_rectangle(S.la_case[x][y].hd, S.la_case[x][y].bg, COUL_MUR);
@@ -46,6 +45,8 @@ void affiche_tout(SOKOBAN S){
 			affiche_cases(S, x, y);
 		}
 	}
+	//affiche_contour_jeu();
+	//affiche_bouton_deplacement();
 	affiche_all();
 }
 

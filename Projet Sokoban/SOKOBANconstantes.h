@@ -1,7 +1,6 @@
-
 //taille du sokoban
 #define TAILLE_SOKOBAN 20
-#define T 20
+#define T 30
 
 //definition des objets
 #define VIDE 0
@@ -12,9 +11,10 @@
 #define CAISSE_PLACE 5
 
 //constantes d'affichage
-#define TAILLE_CASE 20
-#define LARG_FENETRE (T*TAILLE_CASE)
-#define HAUT_FENETRE (T*TAILLE_CASE)
+#define TAILLE_CASE 15
+#define TAILLE_INTERFACE 150
+#define LARG_FENETRE (T*TAILLE_CASE) + TAILLE_INTERFACE
+#define HAUT_FENETRE (T*TAILLE_CASE) + TAILLE_INTERFACE
 
 //constantes pour les couleurs
 #define COUL_MUR red

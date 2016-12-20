@@ -1,8 +1,5 @@
+#include "uvsqgraphics.h"
 #include "SOKOBANconstantes.h"
-#include "graphics.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 struct Case{
 	int objet;
