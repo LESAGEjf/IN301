@@ -172,6 +172,8 @@ int deplacement_possible(SOKOBAN s, POINT p){
 
 SOKOBAN deplace_bonhomme(SOKOBAN s){
 	POINT p;
+	p = 
+}
 
 int main(/*int argc, char* argv[]*/){
 	
