@@ -66,48 +66,82 @@ int trouve_y_bonhomme(SOKOBAN s){
 	return -1;
 }
 
+POINT clic_deplacement(POINT p){
+	//bouton bas
+	if( (p.x >= 513) && (p.x <= 557) && (p.y >= 23) && (p.y <= 67) ){
+		p.x = 0;
+		p.y = -1;
+		return  p;
+	}
+	//bouton gauche
+	if( (p.x >= 463) && (p.x <= 507) && (p.y >= 53) && (p.y <= 97) ){
+		p.x = -1;
+		p.y = 0;
+		return  p;
+	}
+	//bouton droit
+	if( (p.x >= 563) && (p.x <= 607) && (p.y >= 53) && (p.y <= 97) ){
+		p.x = 1;
+		p.y = 0;
+		return  p;
+	}
+	//bouton haut
+	if( (p.x >= 513) && (p.x <= 557) && (p.y >= 83) && (p.y <= 127) ){
+		p.x = 0;
+		p.y = 1;
+		return  p;
+	}
+	//si on appuie sur une des fleches au clavier
+	if( p.x == 1 || p.x == -1 || p.y == 1 || p.y == -1){
+		return p;
+	}
+	return p;
+}
+	
+
 int deplacement_possible(SOKOBAN s, POINT p){
-	if(p.x > 0 && s.la_case[trouve_x_bonhomme(s) +1][trouve_y_bonhomme(s)].objet != MUR){
+	if(p.x == 1 && s.la_case[trouve_x_bonhomme(s) +1][trouve_y_bonhomme(s)].objet != MUR){
 		return 1;
 	}
-	if(p.x < 0 && s.la_case[trouve_x_bonhomme(s) -1][trouve_y_bonhomme(s)].objet != MUR){
+	if(p.x == -1 && s.la_case[trouve_x_bonhomme(s) -1][trouve_y_bonhomme(s)].objet != MUR){
 		return 2;
 	}
-	if(p.y > 0 && s.la_case[trouve_x_bonhomme(s)][trouve_y_bonhomme(s) +1].objet != MUR){
+	if(p.y == 1 && s.la_case[trouve_x_bonhomme(s)][trouve_y_bonhomme(s) +1].objet != MUR){
 		return 3;
 	}
-	if(p.y < 0 && s.la_case[trouve_x_bonhomme(s)][trouve_y_bonhomme(s) -1].objet != MUR){
+	if(p.y == -1 && s.la_case[trouve_x_bonhomme(s)][trouve_y_bonhomme(s) -1].objet != MUR){
 		return 4;
 	}
 	else return 0;
 }
 
-SOKOBAN deplace_bonhomme(SOKOBAN s){
-	POINT p;
+SOKOBAN deplace_bonhomme(SOKOBAN s, POINT p){
 	int var1, var2;
-	char c;
-	p = wait_key_or_clic(&c);
-	int i, j;
+	int i, j, objet_courant;
 	i = trouve_x_bonhomme(s);
 	j = trouve_y_bonhomme(s);
-if(s.la_case[i][j].objet == BONHOMME){	
+	objet_courant = VIDE;
+	
+if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBONHOMME){
+	if(s.la_case[i][j].objet == EMPLACEMENTetBONHOMME){
+		objet_courant = EMPLACEMENT;
+	}
 	if(deplacement_possible(s, p) == 1){
 		var1 = s.la_case[i+1][j].objet;
 		var2 = s.la_case[i+2][j].objet;
 		if(var1 == CAISSE_A_BOUGER){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i+1][j].objet = BONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i+1][j].objet = BONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_PLACE;
 				moves++;
@@ -115,31 +149,30 @@ if(s.la_case[i][j].objet == BONHOMME){
 			}
 		}
 		if(var1 == VIDE){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i+1][j].objet = BONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
 			if(var2 == VIDE){
-				s.la_case[i][trouve_y_bonhomme(s)].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_PLACE;
 				moves++;
@@ -152,50 +185,48 @@ if(s.la_case[i][j].objet == BONHOMME){
 		var2 = s.la_case[i-2][j].objet;
 		if(var1 == CAISSE_A_BOUGER){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i-1][j].objet = BONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
-				s.la_case[i-1][trouve_y_bonhomme(s)].objet = BONHOMME;
+				s.la_case[i][j].objet = objet_courant;
+				s.la_case[i-1][j].objet = BONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_PLACE;
 				moves++;
 				return s;
 			}
 		}
 		if(var1 == VIDE){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i-1][j].objet = BONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_PLACE;
 				moves++;
@@ -208,18 +239,17 @@ if(s.la_case[i][j].objet == BONHOMME){
 		var2 = s.la_case[i][j+2].objet;
 		if(var1 == CAISSE_A_BOUGER){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j+1].objet = BONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j+1].objet = BONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_PLACE;
 				moves++;
@@ -227,31 +257,30 @@ if(s.la_case[i][j].objet == BONHOMME){
 			}
 		}
 		if(var1 == VIDE){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j+1].objet = BONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_PLACE;
 				moves++;
@@ -264,7 +293,7 @@ if(s.la_case[i][j].objet == BONHOMME){
 		var2 = s.la_case[i][j-2].objet;
 		if(var1 == CAISSE_A_BOUGER){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j-1].objet = BONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
 				moves++;
@@ -274,7 +303,7 @@ if(s.la_case[i][j].objet == BONHOMME){
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j-1].objet = BONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_PLACE;
 				moves++;
@@ -282,257 +311,30 @@ if(s.la_case[i][j].objet == BONHOMME){
 			}
 		}
 		if(var1 == VIDE){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j-1].objet = BONHOMME;
 				moves++;
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = VIDE;
+					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
 					moves++;
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
 			if(var2 == VIDE){
-				s.la_case[i][j].objet = VIDE;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
 				moves++;
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
 				return s;
 			}
 			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = VIDE;
-				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i][j-2].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-	}
-}
-if(s.la_case[i][j].objet == EMPLACEMENTetBONHOMME){
-	if(deplacement_possible(s, p) == 1){
-		var1 = s.la_case[i+1][j].objet;
-		var2 = s.la_case[i+2][j].objet;
-		if(var1 == CAISSE_A_BOUGER){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i+1][j].objet = BONHOMME;
-				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i+1][j].objet = BONHOMME;
-				s.la_case[i+2][j].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-		if(var1 == VIDE){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i+1][j].objet = BONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == CAISSE_PLACE){
-			if(var2 == VIDE){
-				s.la_case[i][trouve_y_bonhomme(s)].objet = EMPLACEMENT;
-				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i+2][j].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-	}
-	if(deplacement_possible(s, p) == 2){
-		var1 = s.la_case[i-1][j].objet;
-		var2 = s.la_case[i-2][j].objet;
-		if(var1 == CAISSE_A_BOUGER){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i-1][j].objet = BONHOMME;
-				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i-1][trouve_y_bonhomme(s)].objet = BONHOMME;
-				s.la_case[i-2][j].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-		if(var1 == VIDE){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i-1][j].objet = BONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == CAISSE_PLACE){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i-2][j].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-	}
-	if(deplacement_possible(s, p) == 3){
-		var1 = s.la_case[i][j+1].objet;
-		var2 = s.la_case[i][j+2].objet;
-		if(var1 == CAISSE_A_BOUGER){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j+1].objet = BONHOMME;
-				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j+1].objet = BONHOMME;
-				s.la_case[i][j+2].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-		if(var1 == VIDE){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i][j+1].objet = BONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == CAISSE_PLACE){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i][j+2].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-	}
-	if(deplacement_possible(s, p) == 4){
-		var1 = s.la_case[i][j-1].objet;
-		var2 = s.la_case[i][j-2].objet;
-		if(var1 == CAISSE_A_BOUGER){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j-1].objet = BONHOMME;
-				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j-1].objet = BONHOMME;
-				s.la_case[i][j-2].objet = CAISSE_PLACE;
-				moves++;
-				return s;
-			}
-		}
-		if(var1 == VIDE){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i][j-1].objet = BONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = EMPLACEMENT;
-					s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
-				moves++;
-					return s;
-				}
-		if(var1 == CAISSE_PLACE){
-			if(var2 == VIDE){
-				s.la_case[i][j].objet = EMPLACEMENT;
-				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
-				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
-				moves++;
-				return s;
-			}
-			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
-				moves++;
-				return s;
-			}
-			if(var2 == EMPLACEMENT){
-				s.la_case[i][j].objet = EMPLACEMENT;
+				s.la_case[i][j].objet = objet_courant;
 				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_PLACE;
 				moves++;
@@ -543,30 +345,4 @@ if(s.la_case[i][j].objet == EMPLACEMENTetBONHOMME){
 }
 	return s;
 }
-
-int main(/*int argc, char* argv[]*/){
-	
-	init_graphics(LARG_FENETRE,HAUT_FENETRE);
-	affiche_auto_off();
-	
-	int lvl;
-	lvl = 25;
-	
-	SOKOBAN S;
-	
-	/*if(argc > 1){
-		lvl = atoi(argv[1]);
-	}*/
-	S = lit_niveau(S, lvl);
-	
-	while(1){
-		affiche_tout(S, lvl);
-		affiche_all();
-		S = deplace_bonhomme(S);
-		affiche_all();
-	}
-	wait_escape(0);
-	exit(0);
-}
-
 

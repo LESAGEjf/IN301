@@ -130,8 +130,8 @@ SOKOBAN lit_niveau(SOKOBAN s, int lvl){
 
 void affiche_un_bouton(char* txt, POINT centre, int rayon, COULEUR cr, COULEUR ctxt){
 	POINT ptxt;
-	ptxt.x = centre.x -18;
-	ptxt.y = centre.y +10;
+	ptxt.x = centre.x - 18;
+	ptxt.y = centre.y + 10;
 	POINT hg, bd;
 	hg.x = centre.x - rayon; hg.y = centre.y + rayon;
 	bd.x = centre.x + rayon; bd.y = centre.y - rayon;
@@ -151,6 +151,8 @@ void affiche_un_gros_bouton(char* txt, POINT centre, int rayon, COULEUR cr, COUL
 }
 
 void affiche_tous_les_boutons(){
+	int r = 22;
+	
 	POINT gauche, droite, haut, bas, undo, redo, precedent, suivant, quitter, init;
 	bas.x = 535; bas.y = 45;
 	gauche.x = 485; gauche.y = 75;
@@ -173,7 +175,7 @@ void affiche_tous_les_boutons(){
 	char s[] = "suivant";
 	char q[] = "quitter";
 	char i[] = "init";
-	int r = 22;
+	
 	
 	affiche_un_bouton(b, bas, r, white, blue);
 	affiche_un_bouton(g, gauche, r, white, blue);

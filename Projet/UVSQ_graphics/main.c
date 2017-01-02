@@ -9,6 +9,47 @@
 #define COUL_FOND  noir
 #define NB_POINTS  20
  
+ #ifndef ___wait_key_or_clic
+#define ___wait_key_or_clic
+POINT wait_key_or_clic(char* isKey){
+  	int encore = 1;
+	POINT dep;
+	SDL_Event event;
+	*isKey = 1;
+	dep.x = 0;
+	dep.y = 0;
+	while (encore && SDL_WaitEvent(&event))
+	  {
+	    /* Si l'utilisateur a appuyé sur une touche */
+	    if (event.type == SDL_KEYDOWN)
+	      {
+		if(event.key.keysym.sym == SDLK_ESCAPE) exit(0);
+		else if(event.key.keysym.sym == SDLK_LEFT)  encore=0, (dep.x) = -1;
+		else if(event.key.keysym.sym == SDLK_RIGHT) encore=0, (dep.x) = 1;
+		else if(event.key.keysym.sym == SDLK_UP)    encore=0, (dep.y) = 1;
+		else if(event.key.keysym.sym == SDLK_DOWN)  encore=0, (dep.y) = -1;
+		else if(256 <= event.key.keysym.sym && event.key.keysym.sym <= 265) encore=0, *isKey = '0' + event.key.keysym.sym - 256;
+		else if('a' <= event.key.keysym.sym && event.key.keysym.sym <= 'z') encore=0,  *isKey = event.key.keysym.sym;
+		else *isKey = 0;
+		while (SDL_WaitEvent(&event)){
+		  if (event.type == SDL_KEYUP) break;
+		}
+	      }
+	    /* Si l'utilisateur clique avec la souris */
+	    else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT))
+	      {
+		*isKey = 0;
+		encore = 0;
+		dep.x = event.button.x;
+		dep.y = HEIGHT-event.button.y;
+	      }
+	    /* Si l'utilisateur a demandé à fermer la fenêtre, on quitte */
+	    else if (event.type == SDL_QUIT) exit(0);
+	  }
+	return dep;
+}
+#endif
+
 
 struct element{
   POINT p;
