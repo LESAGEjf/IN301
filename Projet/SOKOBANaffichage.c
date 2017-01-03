@@ -18,6 +18,35 @@ struct Sokoban{
 };
 struct Sokoban typedef SOKOBAN;
 
+
+
+struct element{
+	SOKOBAN s;
+	struct element *suiv;
+};
+typedef struct element *Liste;
+
+
+Liste l = NULL;
+Liste ll = NULL;
+
+Liste ajoutDebut(Liste l, SOKOBAN s){
+	Liste tmp = malloc(sizeof(struct element));
+	tmp->s = s;
+	tmp->suiv = l;
+	return tmp;
+}
+
+Liste supprimeDebut(Liste l){
+	Liste ll;
+	if(l != NULL){
+		ll = l;
+		l = l->suiv;
+	free(ll);
+  }
+  return l;
+}
+
 void affiche_contour_jeu(){
 	POINT hg, hd, bd;
 	hg.x = 0; hg.y = NOMBRE_CASES_VERTICALES*TAILLE_CASE + 1;
@@ -165,16 +194,16 @@ void affiche_tous_les_boutons(){
 	quitter.x = 50; quitter.y = 420;
 	init.x = 50; init.y = 360;
 	
-	char b[] = "bas";
-	char g[] = "gauche";
-	char d[] = "droite";
-	char h[] = "haut";
-	char u[] = "undo";
-	char re[] = "redo";
-	char p[] = "precedent";
-	char s[] = "suivant";
-	char q[] = "quitter";
-	char i[] = "init";
+	char b[] = "Bas";
+	char g[] = "Gauche";
+	char d[] = "Droite";
+	char h[] = "Haut";
+	char u[] = "Undo";
+	char re[] = "Redo";
+	char p[] = "Precedent";
+	char s[] = "Suivant";
+	char q[] = "Quitter";
+	char i[] = "Init";
 	
 	
 	affiche_un_bouton(b, bas, r, white, blue);
@@ -218,26 +247,3 @@ void affiche_tout(SOKOBAN S, int lvl){
 		}
 	}
 }
-
-/*
-int main(int argc, char* argv[]){
-	
-	init_graphics(LARG_FENETRE,HAUT_FENETRE);
-	affiche_auto_off();
-	
-	int lvl;
-	lvl = 15;
-	
-	SOKOBAN S;
-	
-	while(1){
-		S = lit_niveau(S, lvl);
-		affiche_tout(S, lvl);
-		affiche_all();
-	
-	
-	wait_escape(0);
-	exit(0);
-}
-}
-*/

@@ -135,6 +135,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i+1][j].objet = BONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
@@ -145,6 +146,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i+1][j].objet = BONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -152,12 +154,14 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i+1][j].objet = BONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
@@ -166,6 +170,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
@@ -176,6 +181,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i+1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i+2][j].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -189,6 +195,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i-1][j].objet = BONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
@@ -199,6 +206,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i-1][j].objet = BONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -206,12 +214,14 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i-1][j].objet = BONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
@@ -220,6 +230,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
@@ -230,6 +241,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i-1][j].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i-2][j].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -243,6 +255,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j+1].objet = BONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
@@ -253,6 +266,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j+1].objet = BONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -260,12 +274,14 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j+1].objet = BONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == EMPLACEMENT){
 					s.la_case[i][j].objet = objet_courant;
 					s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 					moves++;
+					l = ajoutDebut(l, s);
 					return s;
 				}
 		if(var1 == CAISSE_PLACE){
@@ -274,6 +290,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
@@ -284,6 +301,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j+1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j+2].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
@@ -297,6 +315,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j-1].objet = BONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE || var2 == MUR){
@@ -307,20 +326,23 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j-1].objet = BONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
 		if(var1 == VIDE){
-					s.la_case[i][j].objet = objet_courant;
-					s.la_case[i][j-1].objet = BONHOMME;
+				s.la_case[i][j].objet = objet_courant;
+				s.la_case[i][j-1].objet = BONHOMME;
 				moves++;
-					return s;
-				}
+				l = ajoutDebut(l, s);
+				return s;
+			}
 		if(var1 == EMPLACEMENT){
-					s.la_case[i][j].objet = objet_courant;
-					s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
-					moves++;
-					return s;
+				s.la_case[i][j].objet = objet_courant;
+				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
+				moves++;
+				l = ajoutDebut(l, s);
+				return s;
 				}
 		if(var1 == CAISSE_PLACE){
 			if(var2 == VIDE){
@@ -328,6 +350,7 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_A_BOUGER;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 			if(var2 == MUR || var2 == CAISSE_A_BOUGER || var2 == CAISSE_PLACE){
@@ -338,11 +361,13 @@ if(s.la_case[i][j].objet == BONHOMME || s.la_case[i][j].objet == EMPLACEMENTetBO
 				s.la_case[i][j-1].objet = EMPLACEMENTetBONHOMME;
 				s.la_case[i][j-2].objet = CAISSE_PLACE;
 				moves++;
+				l = ajoutDebut(l, s);
 				return s;
 			}
 		}
 	}
 }
+	
 	return s;
 }
 
